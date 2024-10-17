@@ -35,6 +35,11 @@ nav {
 #logo {
   display: flex;
 }
+
+#logo a{
+  color: #000;
+  text-decoration: none;
+}
 #logo span {
   font-size: 36px;
   text-transform: uppercase;
