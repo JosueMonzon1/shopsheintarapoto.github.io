@@ -16,7 +16,7 @@ var productList = [
     size: [1, 1, 0, 1, 0],
     isAccessory: false,
     brand: "United Colors of Benetton",
-    price: 2599
+    price: 25
   },
   {
     id: "2",
@@ -33,7 +33,7 @@ var productList = [
     size: [0, 0, 0, 1, 0],
     isAccessory: false,
     brand: "Puma",
-    price: 7999
+    price: 79
   },
   {
     id: "3",
@@ -53,7 +53,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: false,
     brand: "Hush Puppies",
-    price: 6999
+    price: 159
   },
   {
     id: "4",
@@ -72,7 +72,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: false,
     brand: "BARESKIN",
-    price: 9999
+    price: 99
   },
   {
     id: "5",
@@ -91,7 +91,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: false,
     brand: "SASSAFRAS",
-    price: 5200
+    price: 52
   },
   {
     id: "6",
@@ -108,7 +108,7 @@ var productList = [
     size: [1, 1, 1, 1, 1, 1],
     isAccessory: true,
     brand: "Apple",
-    price: 31999
+    price: 99
   },
   {
     id: "7",
@@ -125,7 +125,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: true,
     brand: "Fastrack",
-    price: 1999
+    price: 89
   },
   {
     id: "8",
@@ -142,7 +142,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: true,
     brand: "Samsung",
-    price: 9990
+    price: 79
   },
   {
     id: "9",
@@ -159,7 +159,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: true,
     brand: "Samsung",
-    price: 13990
+    price: 69
   },
   {
     id: "10",
@@ -176,7 +176,7 @@ var productList = [
     size: [1, 1, 1, 1, 1],
     isAccessory: true,
     brand: "Apple",
-    price: 14999
+    price: 59
   }
 ];
 
@@ -221,7 +221,7 @@ function renderData(index, sectionSelector) {
   var p2 = document.createElement("p");
   p2.className = "price";
   textWrapper.appendChild(p2);
-  p2.innerText = "Rs " + productList[index].price;
+  p2.innerText = "S/ " + productList[index].price;
 }
 
 for (var i = 0; i < productList.length; i++) {
