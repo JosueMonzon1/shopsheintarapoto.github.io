@@ -750,4 +750,4 @@ document.querySelectorAll('.button-add-to-cart').forEach(button => {
 	});
   });
   
->>>>>>> de5b2d81037f8f562cb313c5399769a9197687e2
+
