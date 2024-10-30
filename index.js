@@ -690,3 +690,31 @@ const resetOptionsPay = () => {
  deliveryOption.checked = false
  discountOption.checked = false
 }
+
+
+/******************💛💛💛
+ */
+
+function sendPurchaseEvent() {
+    // Crea una lista de productos para el evento, extrayendo la información desde "products"
+    let purchasedProducts = Array.from(products).map((product) => {
+        return {
+            'item_id': product.id,           // Ajusta según tu propiedad de ID del producto
+            'item_name': product.name,       // Ajusta según el nombre del producto
+            'price': product.price,          // Precio unitario del producto
+            'quantity': product.quantity     // Cantidad comprada del producto
+        };
+    });
+
+    // Envía el evento de compra a Google Analytics
+    gtag('event', 'purchase', {
+        'transaction_id': 'TRANS123',       // Cambia este ID dinámicamente según la transacción
+        'affiliation': 'Online Store',
+        'value': purchasedProducts.reduce((total, p) => total + p.price * p.quantity, 0),
+        'currency': 'USD',                 // Cambia la moneda según tu configuración
+        'items': purchasedProducts
+    });
+}
+
+// Llama a la función cuando el usuario hace clic en "Finalizar compra"
+document.querySelector('.btn-finish-buy').addEventListener('click', sendPurchaseEvent);
