@@ -690,3 +690,64 @@ const resetOptionsPay = () => {
  deliveryOption.checked = false
  discountOption.checked = false
 }
+
+<<<<<<< HEAD
+
+/******************💛💛💛
+ */
+
+function sendPurchaseEvent() {
+    // Crea una lista de productos para el evento, extrayendo la información desde "products"
+    let purchasedProducts = Array.from(products).map((product) => {
+        return {
+            'item_id': product.id,           // Ajusta según tu propiedad de ID del producto
+            'item_name': product.name,       // Ajusta según el nombre del producto
+            'price': product.price,          // Precio unitario del producto
+            'quantity': product.quantity     // Cantidad comprada del producto
+        };
+    });
+
+    // Envía el evento de compra a Google Analytics
+    gtag('event', 'purchase', {
+        'transaction_id': 'TRANS123',       // Cambia este ID dinámicamente según la transacción
+        'affiliation': 'Online Store',
+        'value': purchasedProducts.reduce((total, p) => total + p.price * p.quantity, 0),
+        'currency': 'USD',                 // Cambia la moneda según tu configuración
+        'items': purchasedProducts
+    });
+}
+
+// Llama a la función cuando el usuario hace clic en "Finalizar compra"
+document.querySelector('.btn-finish-buy').addEventListener('click', sendPurchaseEvent);
+=======
+// Selecciona todos los botones de "Comprar"
+document.querySelectorAll('.button-add-to-cart').forEach(button => {
+	button.addEventListener('click', function() {
+	  // Obtiene los datos del producto desde los atributos data del artículo correspondiente
+	  const productElement = this.closest('.product');
+	  const productId = productElement.getAttribute('data-id');
+	  const productName = productElement.getAttribute('data-name');
+	  const productCategory = productElement.getAttribute('data-category');
+	  const productPrice = productElement.getAttribute('data-price');
+	  const productReview = productElement.getAttribute('data-review');
+  
+	  // Envía el evento a Google Analytics usando gtag
+	  gtag('event', 'add_to_cart', {
+		'event_category': 'Ecommerce',
+		'event_label': productName,
+		'value': parseFloat(productPrice),
+		'items': [
+		  {
+			'id': productId,
+			'name': productName,
+			'category': productCategory,
+			'price': parseFloat(productPrice),
+			'quantity': 1,
+			'review': productReview
+		  }
+		]
+	  });
+	});
+  });
+  
+>>>>>>> de5b2d81037f8f562cb313c5399769a9197687e2
