@@ -49,6 +49,44 @@
 
 <body>
 
+
+    <script>
+        // Selecciona todos los botones de compra
+        const buttons = document.querySelectorAll('.button-add-to-cart');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                // Selecciona el producto relacionado al botón
+                const product = event.target.closest('.product');
+
+                // Obtiene los datos del producto de sus atributos data-*
+                const productData = {
+                    id: product.getAttribute('data-id'),
+                    name: product.getAttribute('data-name'),
+                    category: product.getAttribute('data-category'),
+                    price: parseFloat(product.getAttribute('data-price')),
+                    review: parseInt(product.getAttribute('data-review'))
+                };
+
+                // Envía los datos a Google Analytics
+                gtag('event', 'add_to_cart', {
+                    items: [
+                        {
+                            item_id: productData.id,
+                            item_name: productData.name,
+                            item_category: productData.category,
+                            price: productData.price,
+                            review_score: productData.review
+                        }
+                    ]
+                });
+
+                console.log('Producto enviado a Google Analytics:', productData);
+            });
+        });
+
+    </script>
+
     <!--  ★´･ｪ･`★´･ｪ･`★´･ｪ･`★´･ｪ･`★´  INICIO HEADER ★´･ｪ･`★´･ｪ･`★´･ｪ･`★´･ｪ･`★´ -->
 
     <header class="header theme-sky-dark in-line" id="header">
