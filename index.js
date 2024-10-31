@@ -723,48 +723,67 @@ const resetOptionsPay = () => {
 
 
 
-// Selecciona el botón de "Finalizar compra"
-const finishBuyButton = document.querySelector('.btn-finish-buy');
-
-// Evento para capturar el evento de compra
-finishBuyButton.addEventListener('click', () => {
-    // Obtén todos los productos en el carrito
+// Función para obtener los productos del carrito
+function getCartProducts() {
     const cartProducts = document.querySelectorAll('.cart-product-added');
-    
-    // Prepara la lista de productos a enviar
-    const products = Array.from(cartProducts).map(product => {
-        return {
-            item_id: product.getAttribute('data-id'),
-            item_name: product.querySelector('.cart-product-name').innerText,
-            price: parseFloat(product.getAttribute('data-price')),
-            quantity: parseInt(product.querySelector('.cart-product-qty').value),
-        };
+    let products = [];
+
+    cartProducts.forEach(product => {
+        const id = product.getAttribute('data-id');
+        const name = product.querySelector('.cart-product-name').innerText;
+        const price = parseFloat(product.getAttribute('data-price'));
+        const quantity = parseInt(product.querySelector('.cart-product-qty').value);
+
+        products.push({
+            item_id: id,
+            item_name: name,
+            price: price,
+            quantity: quantity
+        });
     });
 
-    // Obtén los totales desde el DOM
+    return products;
+}
+
+// Función para obtener totales de la compra
+function getCartTotals() {
     const subtotal = parseFloat(document.querySelector('.cart-subtotal-value').innerText);
+    const taxElement = document.querySelector('.cart-tax-value');
+    const discountElement = document.querySelector('.cart-discount-value');
+    const deliveryElement = document.querySelector('.cart-delivery-value');
     const total = parseFloat(document.querySelector('.cart-total-value').innerText);
-    const tax = parseFloat(document.querySelector('.cart-tax-value')?.innerText || 0);
-    const discount = parseFloat(document.querySelector('.cart-discount-value')?.innerText || 0);
-    const shipping = parseFloat(document.querySelector('.cart-delivery-value')?.innerText || 0);
-    
-    // Envía el evento a Google Analytics
+
+    return {
+        subtotal: subtotal,
+        tax: taxElement ? parseFloat(taxElement.innerText) : 0,
+        discount: discountElement ? parseFloat(discountElement.innerText) : 0,
+        delivery: deliveryElement ? parseFloat(deliveryElement.innerText) : 0,
+        total: total
+    };
+}
+
+// Evento de compra finalizada
+document.querySelector('.btn-finish-buy').addEventListener('click', () => {
+    const products = getCartProducts();
+    const totals = getCartTotals();
+
+    // Envío de datos de compra a Google Analytics
     gtag('event', 'purchase', {
-        transaction_id: 'T' + new Date().getTime(), // Puedes usar un ID único o generarlo automáticamente
-        affiliation: 'Online Store',
-        value: total,
-        currency: 'PEN', // Cambia la moneda si es necesario
-        tax: tax,
-        shipping: shipping,
+        transaction_id: Date.now(), // O utiliza un ID de transacción único
+        affiliation: 'Mi Tienda en Línea',
+        value: totals.total,
+        currency: 'PEN',
+        tax: totals.tax,
+        shipping: totals.delivery,
+        discount: totals.discount,
         items: products
     });
 
     console.log('Compra enviada a Google Analytics:', {
-        subtotal,
-        total,
-        tax,
-        discount,
-        shipping,
-        products
+        transaction_id: Date.now(),
+        products: products,
+        totals: totals
     });
+
+    alert('Compra finalizada. Gracias por tu compra.');
 });
