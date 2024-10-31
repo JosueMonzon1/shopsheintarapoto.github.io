@@ -691,10 +691,10 @@ const resetOptionsPay = () => {
  discountOption.checked = false
 }
 
-<<<<<<< HEAD
 
-/******************💛💛💛
- */
+
+
+
 
 function sendPurchaseEvent() {
     // Crea una lista de productos para el evento, extrayendo la información desde "products"
@@ -719,35 +719,3 @@ function sendPurchaseEvent() {
 
 // Llama a la función cuando el usuario hace clic en "Finalizar compra"
 document.querySelector('.btn-finish-buy').addEventListener('click', sendPurchaseEvent);
-=======
-// Selecciona todos los botones de "Comprar"
-document.querySelectorAll('.button-add-to-cart').forEach(button => {
-	button.addEventListener('click', function() {
-	  // Obtiene los datos del producto desde los atributos data del artículo correspondiente
-	  const productElement = this.closest('.product');
-	  const productId = productElement.getAttribute('data-id');
-	  const productName = productElement.getAttribute('data-name');
-	  const productCategory = productElement.getAttribute('data-category');
-	  const productPrice = productElement.getAttribute('data-price');
-	  const productReview = productElement.getAttribute('data-review');
-  
-	  // Envía el evento a Google Analytics usando gtag
-	  gtag('event', 'add_to_cart', {
-		'event_category': 'Ecommerce',
-		'event_label': productName,
-		'value': parseFloat(productPrice),
-		'items': [
-		  {
-			'id': productId,
-			'name': productName,
-			'category': productCategory,
-			'price': parseFloat(productPrice),
-			'quantity': 1,
-			'review': productReview
-		  }
-		]
-	  });
-	});
-  });
-  
-
