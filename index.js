@@ -728,15 +728,28 @@ const finishBuyButton = document.querySelector('.btn-finish-buy');
 
 finishBuyButton.addEventListener('click', () => {
     // Selecciona todos los productos en el carrito
-    const cartItems = document.querySelectorAll('.cart-product-added');
+    const cartItems = document.querySelectorAll('.cart-products-added .cart-product-added');
+
+    // Verifica si el carrito tiene productos
+    if (cartItems.length === 0) {
+        console.warn("No hay productos en el carrito para finalizar la compra.");
+        return;
+    }
 
     // Mapea los datos de cada producto a un objeto para Google Analytics
-    const items = Array.from(cartItems).map(item => ({
-        item_id: item.getAttribute('data-id'),
-        item_name: item.querySelector('.cart-product-name').textContent,
-        price: parseFloat(item.getAttribute('data-price')),
-        quantity: parseInt(item.getAttribute('data-qty'))
-    }));
+    const items = Array.from(cartItems).map(item => {
+        const itemId = item.getAttribute('data-id');
+        const itemName = item.querySelector('.cart-product-name').textContent;
+        const itemPrice = parseFloat(item.getAttribute('data-price'));
+        const itemQty = parseInt(item.getAttribute('data-qty'));
+
+        return {
+            item_id: itemId,
+            item_name: itemName,
+            price: itemPrice,
+            quantity: itemQty
+        };
+    });
 
     // Extrae el total de la compra
     const total = parseFloat(document.querySelector('.cart-total-value').textContent);
