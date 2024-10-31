@@ -696,26 +696,75 @@ const resetOptionsPay = () => {
 
 
 
-function sendPurchaseEvent() {
-    // Crea una lista de productos para el evento, extrayendo la información desde "products"
-    let purchasedProducts = Array.from(products).map((product) => {
+// function sendPurchaseEvent() {
+//     // Crea una lista de productos para el evento, extrayendo la información desde "products"
+//     let purchasedProducts = Array.from(products).map((product) => {
+//         return {
+//             'item_id': product.id,           // Ajusta según tu propiedad de ID del producto
+//             'item_name': product.name,       // Ajusta según el nombre del producto
+//             'price': product.price,          // Precio unitario del producto
+//             'quantity': product.quantity     // Cantidad comprada del producto
+//         };
+//     });
+
+//     // Envía el evento de compra a Google Analytics
+//     gtag('event', 'purchase', {
+//         'transaction_id': 'TRANS123',       // Cambia este ID dinámicamente según la transacción
+//         'affiliation': 'Online Store',
+//         'value': purchasedProducts.reduce((total, p) => total + p.price * p.quantity, 0),
+//         'currency': 'USD',                 // Cambia la moneda según tu configuración
+//         'items': purchasedProducts
+//     });
+// }
+
+// // Llama a la función cuando el usuario hace clic en "Finalizar compra"
+// document.querySelector('.btn-finish-buy').addEventListener('click', sendPurchaseEvent);
+
+
+
+
+// Selecciona el botón de "Finalizar compra"
+const finishBuyButton = document.querySelector('.btn-finish-buy');
+
+// Evento para capturar el evento de compra
+finishBuyButton.addEventListener('click', () => {
+    // Obtén todos los productos en el carrito
+    const cartProducts = document.querySelectorAll('.cart-product-added');
+    
+    // Prepara la lista de productos a enviar
+    const products = Array.from(cartProducts).map(product => {
         return {
-            'item_id': product.id,           // Ajusta según tu propiedad de ID del producto
-            'item_name': product.name,       // Ajusta según el nombre del producto
-            'price': product.price,          // Precio unitario del producto
-            'quantity': product.quantity     // Cantidad comprada del producto
+            item_id: product.getAttribute('data-id'),
+            item_name: product.querySelector('.cart-product-name').innerText,
+            price: parseFloat(product.getAttribute('data-price')),
+            quantity: parseInt(product.querySelector('.cart-product-qty').value),
         };
     });
 
-    // Envía el evento de compra a Google Analytics
+    // Obtén los totales desde el DOM
+    const subtotal = parseFloat(document.querySelector('.cart-subtotal-value').innerText);
+    const total = parseFloat(document.querySelector('.cart-total-value').innerText);
+    const tax = parseFloat(document.querySelector('.cart-tax-value')?.innerText || 0);
+    const discount = parseFloat(document.querySelector('.cart-discount-value')?.innerText || 0);
+    const shipping = parseFloat(document.querySelector('.cart-delivery-value')?.innerText || 0);
+    
+    // Envía el evento a Google Analytics
     gtag('event', 'purchase', {
-        'transaction_id': 'TRANS123',       // Cambia este ID dinámicamente según la transacción
-        'affiliation': 'Online Store',
-        'value': purchasedProducts.reduce((total, p) => total + p.price * p.quantity, 0),
-        'currency': 'USD',                 // Cambia la moneda según tu configuración
-        'items': purchasedProducts
+        transaction_id: 'T' + new Date().getTime(), // Puedes usar un ID único o generarlo automáticamente
+        affiliation: 'Online Store',
+        value: total,
+        currency: 'PEN', // Cambia la moneda si es necesario
+        tax: tax,
+        shipping: shipping,
+        items: products
     });
-}
 
-// Llama a la función cuando el usuario hace clic en "Finalizar compra"
-document.querySelector('.btn-finish-buy').addEventListener('click', sendPurchaseEvent);
+    console.log('Compra enviada a Google Analytics:', {
+        subtotal,
+        total,
+        tax,
+        discount,
+        shipping,
+        products
+    });
+});
